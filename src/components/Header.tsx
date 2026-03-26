@@ -1,4 +1,4 @@
-import { Moon, Sun, Command, Clock, Star, Search, Info, ClipboardList, Settings } from "lucide-react";
+import { Moon, Sun, Command, Clock, Star, Search, Info, ClipboardList, Settings, Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Headphones } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useState, useEffect, useCallback } from "react";
@@ -7,6 +7,7 @@ import { useFavoritesContext } from "@/contexts/FavoritesContext";
 import { useClipboardHistory } from "@/contexts/ClipboardContext";
 import { totalToolCount, getToolName } from "@/lib/tool-registry";
 import { useSidebar } from "@/components/ui/sidebar";
+import { useMusicPlayer } from "@/contexts/MusicPlayerContext";
 import { InfoModal } from "@/components/InfoModal";
 import { SettingsModal } from "@/components/SettingsModal";
 import {
@@ -26,6 +27,17 @@ export const Header = () => {
   const { recent } = useFavoritesContext();
   const { toggleSidebar } = useSidebar();
   const { setIsOpen: setClipboardOpen } = useClipboardHistory();
+  const { 
+    isPlaying, 
+    togglePlay, 
+    nextTrack, 
+    prevTrack, 
+    repeatMode, 
+    setRepeatMode, 
+    isShuffle, 
+    toggleShuffle,
+    setModalOpen 
+  } = useMusicPlayer();
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
@@ -79,6 +91,42 @@ export const Header = () => {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* 
+              Boutons compacts du lecteur audio. 
+              Placés ici pour ne pas avoir à ouvrir le modal complet à chaque fois.
+              Visible uniquement sur grand écran (lg:flex), avec une petite touche "glassmorphism" très subtile.
+            */}
+            <div className="hidden lg:flex items-center gap-1 border border-border rounded-md px-1 py-0.5 bg-muted/20">
+              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={toggleShuffle} title="Aléatoire">
+                <Shuffle className={`h-3 w-3 ${isShuffle ? 'text-primary' : 'text-muted-foreground'}`} />
+              </Button>
+              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={prevTrack} title="Précédent">
+                <SkipBack className="h-3 w-3" />
+              </Button>
+              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={togglePlay} title={isPlaying ? "Pause" : "Lecture"}>
+                {isPlaying ? <Pause className="h-4 w-4 text-primary" /> : <Play className="h-4 w-4" />}
+              </Button>
+              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={nextTrack} title="Suivant">
+                <SkipForward className="h-3 w-3" />
+              </Button>
+              <Button variant="ghost" size="icon" className="h-7 w-7 relative" onClick={() => setRepeatMode(repeatMode === "NONE" ? "ALL" : repeatMode === "ALL" ? "ONE" : "NONE")} title="Répéter">
+                <Repeat className={`h-3 w-3 ${repeatMode !== "NONE" ? 'text-primary' : 'text-muted-foreground'}`} />
+                {repeatMode === "ONE" && <span className="absolute text-[8px] font-bold mt-2 ml-3 text-primary">1</span>}
+              </Button>
+              <div className="w-[1px] h-4 bg-border mx-1" />
+              <Button variant="ghost" size="icon" className="h-7 w-7 group" onClick={() => setModalOpen(true)} title="Ouvrir le lecteur">
+                <Headphones className={`h-4 w-4 ${isPlaying ? 'text-primary animate-pulse' : 'text-muted-foreground group-hover:text-primary'}`} />
+              </Button>
+            </div>
+            
+            {/* 
+              Bouton Casque pour les mobiles (lg:hidden) 
+              Permet d'ouvrir la popup complète du lecteur, car on manque de place pour tous les boutons !
+            */}
+            <Button variant="ghost" size="icon" className="flex lg:hidden h-8 w-8 group" onClick={() => setModalOpen(true)}>
+              <Headphones className={`h-4 w-4 ${isPlaying ? 'text-primary animate-pulse' : 'text-muted-foreground group-hover:text-primary'}`} />
+            </Button>
+
             {/* Cmd+K search trigger */}
             <Button
               variant="outline"

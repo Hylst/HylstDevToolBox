@@ -9,7 +9,7 @@ Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
 ### Ajouté & Amélioré — Phases 5 à 7 : Polissage, UX & PWA
 
-- **Rebranding** — Application renommée en `HylstDevToolBox` (100% propre, sans dépendance tierce type Lovable)
+- **Rebranding** — Application renommée en `HylstDevToolBox` (100% propre)
 - **PWA & Hors-Ligne** — Intégration de `vite-plugin-pwa` et Service Worker pour une installation bureau/mobile et fonctionnement hors ligne
 - **Clipboard History** — Nouvel onglet d'historique du presse-papier global (Raccourci: `Ctrl+Shift+V`)
 - **Navigation Rapide** — Raccourcis clavier globaux (`Ctrl+Shift+Flèche Gauche/Droite`) pour passer d'un outil à l'autre
@@ -19,6 +19,8 @@ Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 - **Documentation Master** — `features.md`, `test_build_deploy.md`, `ABOUT.md` et `STRUCTURE.md` entièrement mis à jour et validés
 - **Expérience Utilisateur** — Outils portés au nombre de 129, interface humanisée, code commenté.
 - **UI/UX Cyberpunk (Phase 8)** — Remplacement des coeurs et du favicon par des assets pixel-art Hylst, ajout d'animations glitch/pulse sur le Header et sur la home page.
+- **Music Player (Phase 9)** — Lecteur de musique ambiante intégré (`Hylst Cyber Player`) avec contrôles compacts dans le Header et modal dédié (26 titres IA originaux).
+- **Core Fixes** — Résolution du problème 404 au chargement en sous-répertoire via injection de `basename` dans React Router.
 ---
 
 ## [2.2.0] - 2026-03-08

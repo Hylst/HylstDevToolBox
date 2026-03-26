@@ -17,11 +17,14 @@ devtoolbox/
 │   ├── contexts/                    # États Globaux
 │   │   ├── ClipboardContext.tsx     # Interception et histo du presse-papier
 │   │   ├── FavoritesContext.tsx     # Gestion des favoris
-│   │   └── PresentationContext.tsx  # Mode plein écran (Présentation)
+│   │   ├── PresentationContext.tsx  # Mode plein écran (Présentation)
+│   │   └── MusicPlayerContext.tsx   # Lecteur de musique ambiant intégré
 │   │
 │   ├── components/
 │   │   ├── AppSidebar.tsx           # Sidebar navigation (7 catégories)
-│   │   ├── Header.tsx               # Barre de navigation principale
+│   │   ├── Header.tsx               # Barre de navigation principale avec mini-player
+│   │   ├── InfoModal.tsx            # Fenêtre d'info, principes, créateur
+│   │   ├── MusicPlayerModal.tsx     # Interface complète du lecteur audio IA
 │   │   ├── NavLink.tsx              # Composant de lien actif
 │   │   ├── Tooltip.tsx              # Tooltip pédagogique
 │   │   │

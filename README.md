@@ -11,6 +11,7 @@
 - **120+ outils** répartis en 7 catégories thématiques
 - **100% Hors-ligne (PWA)** — Installable sur bureau et mobile, aucune donnée envoyée
 - **Pédagogique** — Infobulles explicatives sur les termes techniques et liens mémos
+- **Lecteur de Musique Cyberpunk** — 26 titres IA originaux en streaming pendant le dev
 - **Recherche globale & Raccourcis clavier** — Trouvez et naviguez rapidement (Ctrl+Shift+Flèches)
 - **Historique du presse-papier** — Gardez une trace de vos copies récentes (Ctrl+Shift+V)
 - **Favoris, récents & préférences** — Export/Import de vos configurations
@@ -71,4 +72,4 @@ Créé avec passion pour la communauté par **Geoffroy Streit** ([hylst.fr](http
 
 ## 📄 Licence
 
-Ce projet est libre et gratuit d'utilisation.
+Ce projet est sous licence MIT (voir le fichier [LICENSE](./LICENSE)). Il est entièrement libre et gratuit d'utilisation.

@@ -53,17 +53,37 @@ export const InfoModal = ({ open, onOpenChange }: InfoModalProps) => {
                 <h4 className="text-sm font-semibold text-foreground mb-3">Principes</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
-                    { icon: "🔒", title: "100% local", desc: "Aucune donnée transmise, tout reste dans votre navigateur" },
-                    { icon: "🎓", title: "Pédagogique", desc: "Conçu pour apprendre et comprendre les concepts" },
-                    { icon: "🇫🇷", title: "En français", desc: "Interface entièrement en français pour les francophones" },
-                    { icon: "⚡", title: "Rapide", desc: "Chargement instantané avec lazy loading et code splitting" },
+                    { 
+                      icon: "🔒", 
+                      title: "100% local", 
+                      desc: "Aucune donnée transmise, tout reste dans votre navigateur",
+                      hoverClass: "hover:bg-blue-500/10 hover:border-blue-500/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)] hover:-translate-y-0.5"
+                    },
+                    { 
+                      icon: "🎓", 
+                      title: "Pédagogique", 
+                      desc: "Chaque outil possède son propre mode d'emploi et ses explications détaillées pour vous faire progresser.",
+                      hoverClass: "hover:bg-emerald-500/10 hover:border-emerald-500/50 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:-translate-y-0.5"
+                    },
+                    { 
+                      icon: "🇫🇷", 
+                      title: "En français", 
+                      desc: "Interface entièrement en français pour les francophones",
+                      hoverClass: "hover:bg-purple-500/10 hover:border-purple-500/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:-translate-y-0.5"
+                    },
+                    { 
+                      icon: "⚡", 
+                      title: "Rapide", 
+                      desc: "Chargement instantané avec lazy loading et code splitting",
+                      hoverClass: "hover:bg-amber-500/10 hover:border-amber-500/50 hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:-translate-y-0.5"
+                    },
                   ].map(p => (
-                    <div key={p.title} className="rounded-lg border border-border bg-muted/30 p-3">
+                    <div key={p.title} className={`rounded-lg border border-border bg-muted/30 p-3 transition-all duration-300 cursor-default ${p.hoverClass}`}>
                       <div className="flex items-center gap-2 mb-1">
-                        <span>{p.icon}</span>
+                        <span className="text-xl drop-shadow-sm">{p.icon}</span>
                         <span className="text-sm font-medium text-foreground">{p.title}</span>
                       </div>
-                      <p className="text-xs text-muted-foreground">{p.desc}</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{p.desc}</p>
                     </div>
                   ))}
                 </div>

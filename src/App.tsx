@@ -12,6 +12,8 @@ import { ClipboardProvider } from "./contexts/ClipboardContext";
 import { CommandPalette } from "./components/CommandPalette";
 import { ClipboardModal } from "./components/ClipboardModal";
 import { PresentationProvider, usePresentation } from "./contexts/PresentationContext";
+import { MusicPlayerProvider } from "./contexts/MusicPlayerContext";
+import { MusicPlayerModal } from "./components/MusicPlayerModal";
 
 import { ToolSkeleton } from "./components/ToolSkeleton";
 import { ToolRouteShell } from "./components/ToolRouteShell";
@@ -314,23 +316,31 @@ const LayoutManager = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <FavoritesProvider>
-      <PresentationProvider>
-        <ClipboardProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <ClipboardModal />
-            <BrowserRouter>
+    <MusicPlayerProvider>
+      <FavoritesProvider>
+        <PresentationProvider>
+          <ClipboardProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <ClipboardModal />
+              <MusicPlayerModal />
+              {/* 
+              Le BrowserRouter gère la navigation côté client.
+              On injecte le basename (ex: '/hdtb/') défini dans vite.config.ts 
+              pour éviter les erreurs 404 au chargement initial.
+            */}
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
               <SidebarProvider>
-                <CommandPalette />
-                <LayoutManager />
-              </SidebarProvider>
-            </BrowserRouter>
-          </TooltipProvider>
-        </ClipboardProvider>
-      </PresentationProvider>
-    </FavoritesProvider>
+                  <CommandPalette />
+                  <LayoutManager />
+                </SidebarProvider>
+              </BrowserRouter>
+            </TooltipProvider>
+          </ClipboardProvider>
+        </PresentationProvider>
+      </FavoritesProvider>
+    </MusicPlayerProvider>
   </QueryClientProvider>
 );
 

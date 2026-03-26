@@ -61,9 +61,25 @@
 
 ---
 
+## Phase 8 ✅ — UX Cyberpunk & Polish
+
+- [x] Favicon : Suppression propre du cache navigateur et fichier `.ico`
+- [x] Accueil : Amélioration des hover effects (gradients, shadow-glow) sur l'InfoModal
+- [x] Header : Animations (glitch/pulse) sur le titre et icônes
+- [x] Nettoyage SEO et PWA complet
+
+## Phase 9 ✅ — Hylst Cyber Player & Fix finaux
+
+- [x] Lecteur ambiant audio (26 musiques générées par IA) streamé depuis `hylst.fr`
+- [x] Modale de contrôle complet `MusicPlayerModal.tsx` avec covers et volume
+- [x] Contrôles compacts intégrés directement dans le `Header.tsx`
+- [x] Résolution de l'erreur 404 au lancement local (injection du `basename` Router)
+- [x] Nettoyage final, licence MIT et git push
+
+---
+
 ## 🚨 Omissions & Incohérences relevées (Audit) - CORRIGÉES ✅
 
 - [x] **SEO & Métadonnées** : Balises `<title>` et descriptions OG corrigées dans `index.html`.
 - [x] **Langue HTML** : `lang="fr"` activé.
 - [x] **Images SEO** : Images générées par IA et copiées dans `/public/`.
-- [x] **Dépendances Lovable** : Nettoyé avec succès.
