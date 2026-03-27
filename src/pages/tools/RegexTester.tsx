@@ -328,15 +328,22 @@ export default function RegexTester() {
 
   useEffect(() => {
     if (!pattern) { setMatches([]); setError(""); return; }
+    // On limite à 1000 matches pour ne pas geler le navigateur sur des patterns trop génériques
+    const MAX_MATCHES = 1000;
     try {
       const regex = new RegExp(pattern, flagStr);
       const allMatches: RegExpMatchArray[] = [];
       if (flags.g) {
         let match;
         const tempRegex = new RegExp(pattern, flagStr);
-        while ((match = tempRegex.exec(testText)) !== null) {
+        let safetyCounter = 0; // Gardien contre les boucles infinies
+        while ((match = tempRegex.exec(testText)) !== null && safetyCounter < MAX_MATCHES) {
           allMatches.push(match);
-          if (match.index === tempRegex.lastIndex) tempRegex.lastIndex++;
+          safetyCounter++;
+          // Si le match est de longueur zéro, on force l'avancement sinon boucle infinie !
+          if (match[0].length === 0) {
+            tempRegex.lastIndex++;
+          }
         }
       } else {
         const match = testText.match(regex);
@@ -353,13 +360,18 @@ export default function RegexTester() {
   const regexParts = useMemo(() => parseRegexParts(pattern), [pattern]);
 
   const debugMatches = useMemo(() => {
+    if (!pattern) return [];
     try {
       const regex = new RegExp(pattern, flagStr);
       const results: Array<{ match: string; groups: string[]; index: number }> = [];
       let match;
+      let safetyCounter = 0;
       if (flags.g) {
-        while ((match = regex.exec(testText)) !== null) {
+        while ((match = regex.exec(testText)) !== null && safetyCounter < 500) {
           results.push({ match: match[0], groups: match.slice(1), index: match.index });
+          safetyCounter++;
+          // Évite la boucle infinie sur les matches vides (ex: pattern .*)
+          if (match[0].length === 0) regex.lastIndex++;
         }
       } else {
         match = regex.exec(testText);
