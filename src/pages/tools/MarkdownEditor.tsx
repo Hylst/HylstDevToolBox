@@ -36,8 +36,7 @@ const documentTemplates = [
     description: "Template README.md standard",
     content: `# Nom du Projet
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](CHANGELOG.md)
+Licence : [MIT](LICENSE) | Version : [1.0.0](CHANGELOG.md)
 
 ## 📋 Description
 
@@ -395,7 +394,7 @@ const quickTemplates = [
   { name: "Tâches", icon: List, content: `- [ ] Tâche à faire\n- [x] Tâche terminée\n- [ ] Autre tâche` },
   { name: "Code", icon: Code, content: `\`\`\`javascript\nfunction exemple() {\n  console.log("Hello World!");\n}\n\`\`\`` },
   { name: "Mermaid", icon: GitBranch, content: `\`\`\`mermaid\nflowchart TD\n    A[Début] --> B{Condition}\n    B -->|Oui| C[Action 1]\n    B -->|Non| D[Action 2]\n    C --> E[Fin]\n    D --> E\n\`\`\`` },
-  { name: "Image", icon: Image, content: `![Description](https://via.placeholder.com/400x200)` }
+  { name: "Image", icon: Image, content: `![Description](images/capture.webp)` }
 ];
 
 // Keyboard shortcuts definition

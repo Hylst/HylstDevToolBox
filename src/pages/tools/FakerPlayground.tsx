@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
+import { randomAvatar, randomPhoto } from "@/lib/sample-images";
 
 // Faker-like data generators organized by category
 const fakerMethods = {
@@ -26,7 +27,7 @@ const fakerMethods = {
     username: () => `${fakerMethods.person.firstName().toLowerCase()}${Math.floor(Math.random() * 1000)}`,
     password: () => Array(12).fill(0).map(() => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%"[Math.floor(Math.random() * 68)]).join(''),
     url: () => `https://www.${["example", "test", "demo", "sample"][Math.floor(Math.random() * 4)]}.com`,
-    avatar: () => `https://i.pravatar.cc/150?u=${Math.random()}`,
+    avatar: randomAvatar,
     ip: () => `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`,
     ipv6: () => Array(8).fill(0).map(() => Math.floor(Math.random() * 65536).toString(16).padStart(4, '0')).join(':'),
     mac: () => Array(6).fill(0).map(() => Math.floor(Math.random() * 256).toString(16).padStart(2, '0')).join(':'),
@@ -87,10 +88,10 @@ const fakerMethods = {
     imei: () => Array(15).fill(0).map(() => Math.floor(Math.random() * 10)).join(''),
   },
   image: {
-    avatar: () => `https://i.pravatar.cc/150?u=${Math.random()}`,
-    nature: () => `https://picsum.photos/seed/${Math.random()}/400/300`,
-    business: () => `https://picsum.photos/seed/${Math.random()}/800/600`,
-    abstract: () => `https://picsum.photos/seed/${Math.random()}/600/400`,
+    avatar: randomAvatar,
+    nature: () => randomPhoto("nature"),
+    business: () => randomPhoto("business"),
+    abstract: () => randomPhoto("abstract"),
   },
   color: {
     hex: () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'),

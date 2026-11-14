@@ -6,6 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SlidersHorizontal, Copy, RotateCcw, ImageIcon } from "lucide-react";
 import { toast } from "sonner";
+import { sampleUrl } from "@/lib/sample-images";
 
 interface Filter {
   name: string;
@@ -42,10 +43,10 @@ const presets = [
 ];
 
 const demoImages = [
-  { name: "Paysage", url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=400&fit=crop" },
-  { name: "Portrait", url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=400&fit=crop" },
-  { name: "Architecture", url: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&h=400&fit=crop" },
-  { name: "Nature", url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=400&fit=crop" },
+  { name: "Paysage", url: sampleUrl("paysage.webp") },
+  { name: "Portrait", url: sampleUrl("portrait.webp") },
+  { name: "Architecture", url: sampleUrl("architecture.webp") },
+  { name: "Nature", url: sampleUrl("foret.webp") },
 ];
 
 export default function CssFilterEditor() {

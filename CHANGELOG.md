@@ -5,6 +5,15 @@ Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
 ---
 
+## [3.0.4] - 2026-11-14
+
+### Images d'exemple locales, dependances
+
+- **Images** : plus aucune image chargee depuis Unsplash, pravatar.cc, picsum.photos ou via.placeholder.com. Les photos d'exemple de l'editeur de filtres CSS, les avatars et les photos des generateurs de donnees (generateur, playground Faker, simulateur de reponses d'API) sont seize images webp creees pour l'application avec Qwen Image 2.1 Turbo execute en local (`public/samples/`, 539 Ko, hors precache). Module commun `src/lib/sample-images.ts`.
+- **Editeur Markdown** : le modele README n'affiche plus de badges shields.io, l'insertion d'image propose un chemin relatif.
+- **Fenetre d'informations** : liste des services exterieurs reduite au registre npm, a Google Fonts et a l'adresse saisie dans le testeur d'API.
+- **Dependances** : `npm audit fix` (jspdf 4.2.1, mermaid 11.17.2, dompurify 3.4.18), zod 4. Plus aucune faille haute ou critique dans les dependances de production ; restent 5 moderees et 2 faibles (react-router 6, katex, outils de build).
+
 ## [3.0.3] - 2026-11-14
 
 ### Mentions legales et confidentialite

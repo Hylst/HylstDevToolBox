@@ -1,3 +1,5 @@
+import { randomAvatar, randomPhoto } from "./sample-images";
+
 // ---- Field type definitions ----
 
 export interface FieldType {
@@ -200,8 +202,8 @@ export function generateValue(
     case 'iban': return genIban();
     case 'siret': return genSiret();
     case 'url': return `https://www.${pick(["example", "test", "demo", "sample"])}.com/${pick(firstNames).toLowerCase()}`;
-    case 'avatar': return `https://i.pravatar.cc/150?u=${genUuid()}`;
-    case 'image': return `https://picsum.photos/seed/${genUuid()}/400/300`;
+    case 'avatar': return randomAvatar();
+    case 'image': return randomPhoto();
     case 'ip': return genIp();
     case 'ipv6': return genIpv6();
     case 'mac': return genMac();

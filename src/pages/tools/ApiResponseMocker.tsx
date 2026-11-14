@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Server, Copy, RefreshCw, Download, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { randomAvatar, randomPhoto } from "@/lib/sample-images";
 
 interface MockTemplate {
   id: string;
@@ -136,7 +137,7 @@ const generateValue = (type: string | any[]): any => {
     case "email":
       return `${firstNames[Math.floor(Math.random() * firstNames.length)].toLowerCase()}${Math.floor(Math.random() * 100)}@${domains[Math.floor(Math.random() * domains.length)]}`;
     case "avatar":
-      return `https://i.pravatar.cc/150?u=${uuid()}`;
+      return randomAvatar();
     case "date":
       const d = new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000);
       return d.toISOString();
@@ -160,7 +161,7 @@ const generateValue = (type: string | any[]): any => {
     case "slug":
       return words.slice(0, 3).join("-");
     case "imageUrl":
-      return `https://picsum.photos/seed/${uuid()}/400/300`;
+      return randomPhoto();
     case "streetAddress":
       return `${Math.floor(Math.random() * 999) + 1} Main Street`;
     case "city":

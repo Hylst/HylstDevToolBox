@@ -256,10 +256,9 @@ export const InfoModal = ({ open, onOpenChange }: InfoModalProps) => {
                 </p>
                 <p>
                   <strong className="text-foreground">Services extérieurs :</strong> certains outils contactent un service tiers quand vous les ouvrez
-                  ou les utilisez, qui reçoit alors votre adresse IP : le registre npm (comparateur npm), Google Fonts (associations de polices),
-                  Unsplash (images d'exemple des filtres CSS), shields.io (badges des exemples Markdown et README), pravatar.cc et picsum.photos
-                  (images factices des générateurs de données), via.placeholder.com (image insérée par l'éditeur Markdown) et l'adresse que vous
-                  saisissez dans le testeur d'API.
+                  ou les utilisez, qui reçoit alors votre adresse IP : le registre npm (comparateur npm), Google Fonts (associations de polices)
+                  et l'adresse que vous saisissez dans le testeur d'API. Les images d'exemple (filtres CSS, avatars et photos des générateurs
+                  de données) sont servies par la plateforme : elles ont été créées pour elle avec un modèle d'image exécuté en local.
                 </p>
                 <p>
                   <strong className="text-foreground">Messagerie :</strong> les messages envoyés à l'adresse de contact sont hébergés par
