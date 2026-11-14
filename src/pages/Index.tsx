@@ -254,8 +254,8 @@ const categories: Category[] = [
 const features = [
   {
     icon: Zap,
-    title: "100% Local",
-    description: "Fonctionne entièrement offline, aucune donnée envoyée",
+    title: "Local d'abord",
+    description: "La plupart des outils marchent hors ligne et vos saisies restent dans votre navigateur",
   },
   {
     icon: Shield,
@@ -318,7 +318,7 @@ export default function Index() {
             <p className="text-lg md:text-xl text-muted-foreground">
               Plus de {totalTools} outils de productivité, d'analyse et de génération.
               <br />
-              100% local, pédagogique et open-source.
+              Local d'abord, pédagogique et open source.
             </p>
 
             {/* Search Bar */}

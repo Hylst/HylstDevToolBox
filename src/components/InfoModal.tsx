@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toolCategories, totalToolCount } from "@/lib/tool-registry";
 import { Badge } from "@/components/ui/badge";
-import { Info, Wrench, BookOpen, User, Mail, Heart, Command, Keyboard, Star, ChevronLeft, ChevronRight, Search, Settings, ClipboardList } from "lucide-react";
+import { Info, Wrench, BookOpen, User, Mail, Heart, Command, Keyboard, Star, ChevronLeft, ChevronRight, Search, Settings, ClipboardList, Scale } from "lucide-react";
 
 interface InfoModalProps {
   open: boolean;
@@ -45,7 +45,7 @@ export const InfoModal = ({ open, onOpenChange }: InfoModalProps) => {
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">Une boîte à outils complète pour développeurs</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  DevToolbox réunit <strong className="text-foreground">{totalToolCount} outils</strong> essentiels pour le développement web dans une seule interface, rapide, moderne et 100% locale. Aucune donnée n'est envoyée à un serveur — tout fonctionne dans votre navigateur.
+                  DevToolbox réunit <strong className="text-foreground">{totalToolCount} outils</strong> essentiels pour le développement web dans une seule interface, rapide et moderne. Vos saisies sont traitées dans votre navigateur, sans compte ni serveur applicatif. Quelques outils contactent un service extérieur quand vous les utilisez : la liste figure dans l'onglet Créateur, rubrique « Mentions légales et confidentialité ».
                 </p>
               </div>
 
@@ -55,8 +55,8 @@ export const InfoModal = ({ open, onOpenChange }: InfoModalProps) => {
                   {[
                     { 
                       icon: "🔒", 
-                      title: "100% local", 
-                      desc: "Aucune donnée transmise, tout reste dans votre navigateur",
+                      title: "Local d'abord",
+                      desc: "Vos saisies restent dans votre navigateur ; les rares appels à un service extérieur sont signalés",
                       hoverClass: "hover:bg-blue-500/10 hover:border-blue-500/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)] hover:-translate-y-0.5"
                     },
                     { 
@@ -203,9 +203,9 @@ export const InfoModal = ({ open, onOpenChange }: InfoModalProps) => {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-foreground">Geoffroy Streit</h3>
-                    <a href="mailto:geoffroy.streit@gmail.com" className="text-sm text-primary hover:underline flex items-center gap-1.5">
+                    <a href="mailto:geoffroy.streit@ik.me" className="text-sm text-primary hover:underline flex items-center gap-1.5">
                       <Mail className="h-3.5 w-3.5" />
-                      geoffroy.streit@gmail.com
+                      geoffroy.streit@ik.me
                     </a>
                   </div>
                 </div>
@@ -215,7 +215,7 @@ export const InfoModal = ({ open, onOpenChange }: InfoModalProps) => {
                     Réalisé par passion dans le cadre de mon apprentissage, de ma plateforme de supports de cours et fiches mémo sur le développement web (<a href="https://hylst.fr" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">hylst.fr</a>), pour le plaisir de partager, et de réunir en un endroit un maximum d'outils utiles au développeur web et plus encore.
                   </p>
                   <p>
-                    L'outil est libre et totalement <strong>gratuit</strong> d'utilisation.
+                    L'outil est libre (licence MIT) et totalement <strong>gratuit</strong> d'utilisation. Conçu et développé par Geoffroy Streit, avec une assistance IA.
                   </p>
                   <p className="font-mono text-xs opacity-80 mt-2">
                     {`/* Geoffroy = apprenant perpétuel ^^ */`} <br/>
@@ -235,6 +235,42 @@ export const InfoModal = ({ open, onOpenChange }: InfoModalProps) => {
                     Que votre code compile du premier coup ! 🚀
                   </p>
                 </div>
+              </div>
+
+              <div id="mentions-legales" className="mt-4 rounded-xl border border-border bg-muted/20 p-6 space-y-3 text-sm text-muted-foreground leading-relaxed">
+                <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <Scale className="h-4 w-4" /> Mentions légales et confidentialité
+                </h4>
+                <p>
+                  <strong className="text-foreground">Éditeur :</strong> Geoffroy Streit, site personnel édité à titre non professionnel.
+                  Contact : <a href="mailto:geoffroy.streit@ik.me" className="text-primary hover:underline">geoffroy.streit@ik.me</a>.
+                </p>
+                <p>
+                  <strong className="text-foreground">Hébergement :</strong> Hostinger International Limited, 61 Lordou Vironos Street, 6023 Larnaca, Chypre
+                  (serveur privé virtuel situé au Royaume-Uni). Comme pour toute page web, le serveur enregistre l'adresse IP, la date, la page demandée
+                  et le navigateur, pour la sécurité et le diagnostic. Ces journaux sont conservés douze mois au plus.
+                </p>
+                <p>
+                  <strong className="text-foreground">Vos données :</strong> pas de compte ni de base de données distante. Vos saisies sont traitées dans
+                  votre navigateur ; préférences, favoris, notes et historiques restent dans son stockage local. Aucun cookie publicitaire ni outil de mesure d'audience.
+                </p>
+                <p>
+                  <strong className="text-foreground">Services extérieurs :</strong> certains outils contactent un service tiers quand vous les ouvrez
+                  ou les utilisez, qui reçoit alors votre adresse IP : le registre npm (comparateur npm), Google Fonts (associations de polices),
+                  Unsplash (images d'exemple des filtres CSS), shields.io (badges des exemples Markdown et README), pravatar.cc et picsum.photos
+                  (images factices des générateurs de données), via.placeholder.com (image insérée par l'éditeur Markdown) et l'adresse que vous
+                  saisissez dans le testeur d'API.
+                </p>
+                <p>
+                  <strong className="text-foreground">Messagerie :</strong> les messages envoyés à l'adresse de contact sont hébergés par
+                  Infomaniak Network SA (Suisse, pays reconnu comme offrant une protection adéquate).
+                </p>
+                <p>
+                  <a href="https://hylst.fr/mentions-legales.html" target="_blank" rel="noopener" className="text-primary hover:underline font-medium">
+                    Mentions légales complètes de la plateforme hylst.fr
+                  </a>{" "}
+                  (droits sur vos données, réclamation auprès de la CNIL).
+                </p>
               </div>
             </TabsContent>
           </ScrollArea>

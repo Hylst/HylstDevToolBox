@@ -5,6 +5,16 @@ Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
 ---
 
+## [3.0.3] - 2026-11-14
+
+### Mentions legales et confidentialite
+
+- **Fenetre d'informations** : onglet Createur complete par une rubrique « Mentions legales et confidentialite » (editeur non professionnel, hebergeur Hostinger avec serveur au Royaume-Uni, journaux douze mois au plus, donnees gardees dans le navigateur, liste des services exterieurs contactes par certains outils, messagerie Infomaniak) et lien vers les mentions de la plateforme hylst.fr. Licence MIT et assistance IA mentionnees.
+- **Contact** : adresse `geoffroy.streit@ik.me`.
+- **Textes** : « 100% local », « Aucune donnee n'est envoyee a un serveur » et « aucune donnee envoyee » (accueil et fenetre d'informations) remplaces par une formulation exacte (quelques outils contactent un service tiers : registre npm, Google Fonts, Unsplash, shields.io, pravatar, picsum, via.placeholder, URL du testeur d'API).
+- **index.html** : polices servies par la plateforme (`/assets/fonts/fonts.css`) au lieu de Google Fonts, correctif applique jusqu'ici a la main sur le build publie.
+- **public/sitemap.xml** : sitemap de l'application, jusqu'ici ajoute a la main sur hylst.fr.
+
 ## [3.0.0] - 2026-03-26
 
 ### Ajouté & Amélioré — Phases 5 à 7 : Polissage, UX & PWA
