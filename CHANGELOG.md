@@ -14,6 +14,7 @@ Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 - **Textes** : « 100% local », « Aucune donnee n'est envoyee a un serveur » et « aucune donnee envoyee » (accueil et fenetre d'informations) remplaces par une formulation exacte (quelques outils contactent un service tiers : registre npm, Google Fonts, Unsplash, shields.io, pravatar, picsum, via.placeholder, URL du testeur d'API).
 - **index.html** : polices servies par la plateforme (`/assets/fonts/fonts.css`) au lieu de Google Fonts, correctif applique jusqu'ici a la main sur le build publie.
 - **public/sitemap.xml** : sitemap de l'application, jusqu'ici ajoute a la main sur hylst.fr.
+- **Mobile** : la page d'accueil depassait de l'ecran a 390 px (colonne principale sans `min-w-0`, boutons de fin de page sans retour a la ligne), ce qui coupait aussi la fenetre d'informations a gauche. Les onglets de cette fenetre defilent desormais horizontalement sur petit ecran.
 
 ## [3.0.0] - 2026-03-26
 

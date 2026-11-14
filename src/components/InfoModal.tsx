@@ -23,8 +23,8 @@ export const InfoModal = ({ open, onOpenChange }: InfoModalProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <Tabs defaultValue="about" className="flex flex-col flex-1 min-h-0">
-          <TabsList className="mx-6 mb-0 w-fit">
+        <Tabs defaultValue="about" className="flex flex-col flex-1 min-h-0 min-w-0">
+          <TabsList className="mx-4 sm:mx-6 mb-0 w-auto sm:w-fit max-w-full justify-start overflow-x-auto">
             <TabsTrigger value="about" className="gap-1.5">
               <Info className="h-3.5 w-3.5" /> À propos
             </TabsTrigger>

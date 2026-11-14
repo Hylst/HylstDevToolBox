@@ -165,7 +165,7 @@ const LayoutManager = () => {
       {/* Affichage de la barre latérale (Sidebar) uniquement en mode classique */}
       {!isPresenting && <AppSidebar />}
       
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Pareil pour l'en-tête (Header), on le masque en mode présentation */}
         {!isPresenting && <Header />}
         

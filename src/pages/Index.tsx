@@ -529,7 +529,7 @@ export default function Index() {
             Tous vos outils de développement réunis dans une interface moderne et intuitive.
             Aucune installation requise, tout fonctionne dans votre navigateur.
           </p>
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-wrap gap-4 justify-center">
             <Button size="lg" onClick={() => navigate("/markdown")} className="shadow-glow">
               Commencer maintenant
             </Button>
