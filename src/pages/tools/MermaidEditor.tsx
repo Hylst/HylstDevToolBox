@@ -382,7 +382,7 @@ function MermaidPreview({ code, theme, zoom }: { code: string; theme: string; zo
         mermaid.initialize({
           startOnLoad: false,
           theme: theme as any,
-          securityLevel: "loose",
+          securityLevel: "strict",
           fontFamily: "ui-monospace, monospace",
         });
         const uniqueId = `mermaid-preview-${id}-${Date.now()}`;

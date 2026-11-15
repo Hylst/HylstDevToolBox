@@ -134,7 +134,7 @@ export default function DependencyGraph() {
 
   useEffect(() => {
     if (!mermaidCode || !diagramRef.current) return;
-    mermaid.initialize({ startOnLoad: false, theme: "default", securityLevel: "loose" });
+    mermaid.initialize({ startOnLoad: false, theme: "default", securityLevel: "strict" });
     diagramRef.current.innerHTML = "";
     mermaid.render("dep-graph", mermaidCode).then(({ svg }) => {
       if (diagramRef.current) diagramRef.current.innerHTML = svg;

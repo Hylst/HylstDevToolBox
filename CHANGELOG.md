@@ -5,6 +5,15 @@ Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
 ---
 
+## [3.0.5] - 2026-11-15
+
+### Securite : 0 faille en production, Mermaid en mode strict
+
+- **Dependances** : React Router 6 a 7.18.5 (redirection ouverte GHSA-wrjc-x8rr-h8h6 ; API `BrowserRouter`, `Routes`, `NavLink` et `useNavigate` inchangees ici), Mermaid 11 a 12.3.0 (embarque KaTeX 0.18.10, corrige GHSA-238p-pmpm-9mq7), Tailwind 3.4.19 et `npm audit fix` (sucrase, glob, minimatch). `npm audit --omit=dev` : 0 (etait 5 moderees et 2 faibles).
+- **Mermaid** : `securityLevel` passe de `loose` a `strict` dans l'editeur Mermaid, l'editeur Markdown et le graphe de dependances. En `loose`, un libelle de diagramme colle depuis une source douteuse pouvait inserer du HTML actif, execute sur l'origine hylst.fr partagee par toutes les apps de la plateforme. Les 13 modeles de l'editeur s'affichent a l'identique.
+- **Controles** : TypeScript 0, build OK ; apercu de production : 13 modeles Mermaid rendus, diagramme dans l'apercu Markdown, graphe de dependances, navigation interne, retour et page 404 ; sonde d'injection dans un libelle non executee. Le lint signale 167 erreurs anterieures (surtout `no-explicit-any`), sans lien avec ces changements.
+- **Plateforme** : les liens directs vers un outil (`/hdtb/mermaid-editor`...) renvoyaient la page 404 de hylst.fr faute de repli SPA ; bloc Nginx ajoute cote plateforme le meme jour.
+
 ## [3.0.4] - 2026-11-14
 
 ### Images d'exemple locales, dependances
