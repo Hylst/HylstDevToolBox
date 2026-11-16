@@ -69,10 +69,14 @@ export const MusicPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [isModalOpen, setModalOpen] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Piste choisie, meme tant qu'aucune source n'est assignee a l'element audio
+  const trackIndexRef = useRef(0);
 
   // Initialisation de l'objet Audio
   useEffect(() => {
     const audio = new Audio();
+    // Aucun prechargement : la source n'est assignee qu'a la premiere lecture (voir play)
+    audio.preload = "none";
     audio.volume = volume;
     audioRef.current = audio;
 
@@ -102,22 +106,32 @@ export const MusicPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Initialisé une seule fois
 
-  // Changement de piste logic
-  const loadTrack = useCallback((index: number, shouldPlay: boolean) => {
-    if (!audioRef.current) return;
+  const ensureSource = useCallback((index: number) => {
     const audio = audioRef.current;
-    
+    if (!audio) return null;
     const trackUrl = `${BASE_URL}${TRACKS[index]}`;
     if (audio.src !== trackUrl) {
       audio.src = trackUrl;
       audio.load();
     }
-    
-    if (shouldPlay) {
-      audio.play().catch(e => console.error("Error playing audio:", e));
-      setIsPlaying(true);
-    }
+    return audio;
   }, []);
+
+  // Changement de piste logic. Sans lecture demandee, la source n'est assignee qu'au premier
+  // clic sur Lecture : assigner la piste des le chargement faisait telecharger le MP3
+  // (6,9 Mo) a chaque visite, meme sans lecture.
+  const loadTrack = useCallback((index: number, shouldPlay: boolean) => {
+    if (!audioRef.current) return;
+    trackIndexRef.current = index;
+
+    if (!shouldPlay) {
+      if (audioRef.current.src) ensureSource(index);
+      return;
+    }
+    const audio = ensureSource(index);
+    audio?.play().catch(e => console.error("Error playing audio:", e));
+    setIsPlaying(true);
+  }, [ensureSource]);
 
   // Update effect when currentTrackIndex changes
   useEffect(() => {
@@ -155,11 +169,12 @@ export const MusicPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const play = useCallback(() => {
     if (audioRef.current) {
+      if (!audioRef.current.src) ensureSource(trackIndexRef.current);
       audioRef.current.play().then(() => {
         setIsPlaying(true);
       }).catch(console.error);
     }
-  }, []);
+  }, [ensureSource]);
 
   const pause = useCallback(() => {
     if (audioRef.current) {

@@ -15,6 +15,10 @@ Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 - **Export des preferences** : les favoris etaient lus sous une cle inexistante (`hylst-favorites`) et sortaient vides ; ils sont lus sous `devtoolbox-favorites`.
 - **Textes** : fenetre de l'historique, reglages, testeur d'API et fenetre d'informations (rubriques Preferences et Vos donnees) disent ce qui est garde et pour combien de temps.
 
+### Performance : lecteur de musique
+
+- **Prechargement** : a chaque visite, le lecteur assignait sa premiere piste avec le prechargement par defaut, et le navigateur telechargeait le MP3 (6,9 Mo) sans que personne ne lance la lecture. La source n'est plus assignee qu'au premier clic sur Lecture (Chromium telechargeait la piste meme avec `preload = "none"`) ; la duree s'affiche des que la piste demarre.
+
 ## [3.0.5] - 2026-11-15
 
 ### Securite : 0 faille en production, Mermaid en mode strict
