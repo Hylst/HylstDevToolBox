@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Settings, Download, Upload, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useClipboardHistory } from "@/contexts/ClipboardContext";
+import { clearDevToolboxData } from "@/lib/devtoolbox-storage";
 
 interface SettingsModalProps {
   open: boolean;
@@ -18,9 +19,8 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
     try {
       const data = {
         theme: localStorage.getItem("theme"),
-        favorites: localStorage.getItem("hylst-favorites"),
-        clipboard: localStorage.getItem("hylst-clipboard-history"),
-        // Export additional state if needed
+        favorites: localStorage.getItem("devtoolbox-favorites"),
+        // L'historique du presse-papiers n'est jamais exporte : il peut contenir des secrets.
         exportDate: new Date().toISOString(),
       };
 
@@ -58,15 +58,11 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
           imported = true;
         }
         
-        if (data.favorites) {
-          localStorage.setItem("hylst-favorites", data.favorites);
+        if (typeof data.favorites === "string") {
+          localStorage.setItem("devtoolbox-favorites", data.favorites);
           imported = true;
         }
-        
-        if (data.clipboard) {
-          localStorage.setItem("hylst-clipboard-history", data.clipboard);
-          imported = true;
-        }
+        // Un ancien export peut contenir l'historique du presse-papiers : il est ignore.
 
         if (imported) {
           toast.success("Préférences importées. La page va se rafraîchir.");
@@ -88,10 +84,11 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
   };
 
   const handleClearAll = () => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer toutes vos données et préférences locales ? Cette action est irréversible.")) {
+    if (window.confirm("Supprimer toutes les données de la boîte à outils dans ce navigateur (notes, favoris, collections, réglages d'outils) ? Cette action est irréversible.")) {
       clearHistory();
-      localStorage.clear();
-      toast.success("Toutes les données ont été effacées. Actualisation...");
+      // Seules les cles de la boite a outils : l'origine hylst.fr est partagee avec les autres apps.
+      clearDevToolboxData(localStorage, sessionStorage);
+      toast.success("Données de la boîte à outils effacées. Actualisation...");
       setTimeout(() => window.location.reload(), 1500);
     }
   };
@@ -105,7 +102,7 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
             Paramètres et Préférences
           </DialogTitle>
           <DialogDescription>
-            Gérez vos données locales, exportez ou importez vos favoris et votre historique.
+            Gérez vos données locales, exportez ou importez votre thème et vos favoris.
           </DialogDescription>
         </DialogHeader>
 
@@ -130,7 +127,7 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
               />
             </div>
             <p className="text-xs text-muted-foreground mt-2">
-              L'export contient votre thème, vos favoris et l'historique de votre presse-papier.
+              L'export contient votre thème et vos favoris. L'historique du presse-papiers n'est jamais exporté.
             </p>
           </div>
 
@@ -143,7 +140,7 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
               Réinitialiser l'application
             </Button>
             <p className="text-xs text-muted-foreground mt-2">
-              Ceci effacera toutes les données stockées dans votre navigateur (historique, favoris, réglages d'outils).
+              Ceci efface les données de la boîte à outils dans ce navigateur (notes, favoris, historiques, réglages d'outils). Le thème et les autres applications de hylst.fr ne sont pas touchés.
             </p>
           </div>
         </div>

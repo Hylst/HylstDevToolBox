@@ -189,7 +189,7 @@ export const InfoModal = ({ open, onOpenChange }: InfoModalProps) => {
                   <Settings className="h-4 w-4" /> Préférences & Export
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  Vos paramètres, favoris et historique sont sauvés dans votre navigateur. Utilisez l'icône <Settings className="inline h-3.5 w-3.5" /> dans l'en-tête pour exporter vos données (JSON) et les restaurer sur un autre appareil.
+                  Vos paramètres et favoris sont sauvés dans votre navigateur ; l'historique du presse-papiers et les valeurs sensibles du testeur d'API ne durent que le temps de l'onglet. Utilisez l'icône <Settings className="inline h-3.5 w-3.5" /> dans l'en-tête pour exporter vos données (JSON) et les restaurer sur un autre appareil.
                 </p>
               </div>
             </TabsContent>
@@ -252,7 +252,9 @@ export const InfoModal = ({ open, onOpenChange }: InfoModalProps) => {
                 </p>
                 <p>
                   <strong className="text-foreground">Vos données :</strong> pas de compte ni de base de données distante. Vos saisies sont traitées dans
-                  votre navigateur ; préférences, favoris, notes et historiques restent dans son stockage local. Aucun cookie publicitaire ni outil de mesure d'audience.
+                  votre navigateur ; préférences, favoris, notes et historiques restent dans son stockage local. L'historique du presse-papiers
+                  et les valeurs sensibles du testeur d'API (clés, jetons, mots de passe, cookies) ne sont gardés que le temps de l'onglet.
+                  Aucun cookie publicitaire ni outil de mesure d'audience.
                 </p>
                 <p>
                   <strong className="text-foreground">Services extérieurs :</strong> certains outils contactent un service tiers quand vous les ouvrez

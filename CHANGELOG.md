@@ -5,6 +5,16 @@ Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
 ---
 
+## [3.0.6] - 2026-11-16
+
+### Confidentialite : presse-papiers, testeur d'API, reinitialisation
+
+- **Historique du presse-papiers** : l'application garde les 50 dernieres copies (boutons « Copier » et Ctrl+C dans ses pages) pour la fenetre Ctrl+Maj+V. Elles etaient enregistrees en clair dans `localStorage`, d'une visite a l'autre et sans avertissement, alors qu'on y copie des mots de passe, jetons JWT ou cles. Elles ne sont plus gardees que le temps de l'onglet (`sessionStorage`). L'ancien historique durable est retire au premier chargement, avec un message, et reste visible jusqu'a la fermeture de l'onglet. Il ne fait plus partie de l'export des preferences, et un ancien export qui le contient est importe sans lui.
+- **Testeur d'API** : les valeurs des variables d'environnement, en-tetes et parametres au nom sensible (cle, jeton, secret, mot de passe, cookie, `Authorization`, session) ne sont plus enregistrees dans `localStorage` : elles restent dans `sessionStorage` le temps de l'onglet. Une valeur faite seulement de references (`Bearer {{TOKEN}}`) reste enregistree. L'historique des requetes garde l'URL sans la valeur des parametres sensibles. Les anciennes valeurs sont retirees du stockage durable au premier chargement, avec un message ; l'export des collections (fichier en clair) permet de les garder. Module `src/lib/sensitive-storage.ts`.
+- **Reinitialisation** : le bouton « Reinitialiser l'application » appelait `localStorage.clear()`. L'origine hylst.fr etant partagee par toutes les apps de la plateforme, il effacait aussi leurs donnees (progressions, profils, reglages). Il ne retire plus que les cles de la boite a outils (`src/lib/devtoolbox-storage.ts`) ; le theme, cle commune a d'autres apps, est garde.
+- **Export des preferences** : les favoris etaient lus sous une cle inexistante (`hylst-favorites`) et sortaient vides ; ils sont lus sous `devtoolbox-favorites`.
+- **Textes** : fenetre de l'historique, reglages, testeur d'API et fenetre d'informations (rubriques Preferences et Vos donnees) disent ce qui est garde et pour combien de temps.
+
 ## [3.0.5] - 2026-11-15
 
 ### Securite : 0 faille en production, Mermaid en mode strict

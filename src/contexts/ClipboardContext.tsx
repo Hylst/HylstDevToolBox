@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { toast } from "sonner";
+import { CLIPBOARD_HISTORY_KEY } from "@/lib/devtoolbox-storage";
 
 export interface ClipboardItem {
   id: string;
@@ -16,20 +18,74 @@ interface ClipboardContextType {
 
 const ClipboardContext = createContext<ClipboardContextType | undefined>(undefined);
 
+const MAX_ITEMS = 50;
+
+function readItems(storage: Storage): ClipboardItem[] {
+  try {
+    const saved = JSON.parse(storage.getItem(CLIPBOARD_HISTORY_KEY) || "[]");
+    return Array.isArray(saved) ? saved.filter((i) => i && typeof i.text === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+// L'historique ne dure que le temps de l'onglet (sessionStorage) : les copies contiennent
+// souvent des mots de passe, jetons ou cles, et l'origine hylst.fr est partagee par toutes
+// les apps de la plateforme. Jusqu'a la 3.0.5, il etait garde dans localStorage.
+function initialHistory() {
+  let session: ClipboardItem[] = [];
+  let legacy: ClipboardItem[] = [];
+  try {
+    session = readItems(sessionStorage);
+  } catch {
+    session = [];
+  }
+  try {
+    legacy = readItems(localStorage);
+  } catch {
+    legacy = [];
+  }
+  const ids = new Set(session.map((i) => i.id));
+  const items = [...session, ...legacy.filter((i) => !ids.has(i.id))].slice(0, MAX_ITEMS);
+  return { items, legacyCount: legacy.length };
+}
+
 export function ClipboardProvider({ children }: { children: ReactNode }) {
-  const [history, setHistory] = useState<ClipboardItem[]>(() => {
-    try {
-      const saved = localStorage.getItem("hylst-clipboard-history");
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [initial] = useState(initialHistory);
+  const [history, setHistory] = useState<ClipboardItem[]>(initial.items);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("hylst-clipboard-history", JSON.stringify(history));
+    try {
+      if (history.length > 0) sessionStorage.setItem(CLIPBOARD_HISTORY_KEY, JSON.stringify(history));
+      else sessionStorage.removeItem(CLIPBOARD_HISTORY_KEY);
+    } catch {
+      /* stockage de session indisponible : l'historique reste en memoire */
+    }
   }, [history]);
+
+  useEffect(() => {
+    try {
+      localStorage.removeItem(CLIPBOARD_HISTORY_KEY);
+    } catch {
+      /* stockage indisponible */
+    }
+  }, []);
+
+  // Message differe de 400 ms : la page s'affiche avant la notification.
+  useEffect(() => {
+    if (initial.legacyCount === 0) return;
+    const timer = window.setTimeout(() => {
+      toast.info("Historique du presse-papiers", {
+        description:
+          `Il n'est plus gardé d'une visite à l'autre : ${initial.legacyCount} copie(s) enregistrée(s) ` +
+          "ont été retirées du stockage du navigateur. Elles restent visibles jusqu'à la fermeture de " +
+          "cet onglet (Ctrl+Maj+V).",
+        duration: 12000,
+      });
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [initial]);
 
   useEffect(() => {
     // 1️⃣ Interception de navigator.clipboard.writeText (pour les boutons "Copier" de l'app)
@@ -42,7 +98,7 @@ export function ClipboardProvider({ children }: { children: ReactNode }) {
       setHistory((prev) => {
         if (prev.length > 0 && prev[0].text === text) return prev;
         const newItem = { id: crypto.randomUUID(), text, timestamp: Date.now() };
-        return [newItem, ...prev].slice(0, 50);
+        return [newItem, ...prev].slice(0, MAX_ITEMS);
       });
       return boundWriteText(text);
     };
@@ -54,7 +110,7 @@ export function ClipboardProvider({ children }: { children: ReactNode }) {
         setHistory((prev) => {
           if (prev.length > 0 && prev[0].text === selectedText) return prev;
           const newItem = { id: crypto.randomUUID(), text: selectedText, timestamp: Date.now() };
-          return [newItem, ...prev].slice(0, 50);
+          return [newItem, ...prev].slice(0, MAX_ITEMS);
         });
       }
     };

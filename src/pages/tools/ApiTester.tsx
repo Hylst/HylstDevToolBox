@@ -14,6 +14,13 @@ import {
   Code, History, Settings, Play, ChevronRight, FileJson, X
 } from "lucide-react";
 import { toast } from "sonner";
+import {
+  loadApiTesterState,
+  persistApiTesterHistory,
+  persistApiTesterState,
+  redactUrl,
+  API_TESTER_KEYS,
+} from "@/lib/sensitive-storage";
 
 // Types
 interface Header {
@@ -59,12 +66,21 @@ interface HistoryItem {
   responseTime: number;
 }
 
-const STORAGE_KEYS = {
-  COLLECTIONS: "api-tester-collections",
-  ENVIRONMENTS: "api-tester-environments",
-  HISTORY: "api-tester-history",
-  ACTIVE_ENV: "api-tester-active-env",
-};
+const STORAGE_KEYS = API_TESTER_KEYS;
+
+// Valeurs sensibles (clés, jetons, mots de passe, cookies) gardées pour la session seulement.
+const SESSION_NOTE =
+  "Les valeurs des variables, en-têtes et paramètres au nom sensible (clé, jeton, mot de passe, cookie, Authorization) " +
+  "ne sont gardées que le temps de cet onglet ; tout le reste est enregistré dans ce navigateur. Exportez vos " +
+  "collections pour garder ces valeurs (le fichier est en clair).";
+
+function loadInitialState() {
+  try {
+    return loadApiTesterState(localStorage, sessionStorage, DEFAULT_ENVIRONMENTS);
+  } catch {
+    return { collections: [], environments: DEFAULT_ENVIRONMENTS, history: [], activeEnvId: null, legacySecrets: 0 };
+  }
+}
 
 const DEFAULT_ENVIRONMENTS: Environment[] = [
   { id: "dev", name: "Development", variables: { BASE_URL: "http://localhost:3000", API_KEY: "" } },
@@ -73,6 +89,8 @@ const DEFAULT_ENVIRONMENTS: Environment[] = [
 ];
 
 export default function ApiTester() {
+  const [initial] = useState(loadInitialState);
+
   // Request state
   const [method, setMethod] = useState("GET");
   const [url, setUrl] = useState("");
@@ -84,12 +102,12 @@ export default function ApiTester() {
   const [loading, setLoading] = useState(false);
 
   // Collections & History
-  const [collections, setCollections] = useState<Collection[]>([]);
-  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [collections, setCollections] = useState<Collection[]>(initial.collections);
+  const [history, setHistory] = useState<HistoryItem[]>(initial.history);
   
   // Environments
-  const [environments, setEnvironments] = useState<Environment[]>(DEFAULT_ENVIRONMENTS);
-  const [activeEnvId, setActiveEnvId] = useState<string | null>(null);
+  const [environments, setEnvironments] = useState<Environment[]>(initial.environments);
+  const [activeEnvId, setActiveEnvId] = useState<string | null>(initial.activeEnvId);
   
   // UI state
   const [activeTab, setActiveTab] = useState("params");
@@ -99,30 +117,36 @@ export default function ApiTester() {
   const [newRequestName, setNewRequestName] = useState("");
   const [selectedCollectionId, setSelectedCollectionId] = useState<string | null>(null);
 
-  // Load from localStorage
+  // Anciennes versions : valeurs sensibles trouvees dans localStorage, retirees au premier enregistrement
   useEffect(() => {
-    const savedCollections = localStorage.getItem(STORAGE_KEYS.COLLECTIONS);
-    const savedEnvs = localStorage.getItem(STORAGE_KEYS.ENVIRONMENTS);
-    const savedHistory = localStorage.getItem(STORAGE_KEYS.HISTORY);
-    const savedActiveEnv = localStorage.getItem(STORAGE_KEYS.ACTIVE_ENV);
+    if (initial.legacySecrets === 0) return;
+    // Differe de 400 ms : la page s'affiche avant la notification
+    const timer = window.setTimeout(() => {
+      toast.info("Valeurs sensibles retirées du stockage durable", {
+        description:
+          `${initial.legacySecrets} valeur(s) (clés, jetons, mots de passe) ne sont plus enregistrées dans ce navigateur. ` +
+          "Elles restent disponibles jusqu'à la fermeture de l'onglet : exportez vos collections pour les garder.",
+        duration: 15000,
+      });
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [initial]);
 
-    if (savedCollections) setCollections(JSON.parse(savedCollections));
-    if (savedEnvs) setEnvironments(JSON.parse(savedEnvs));
-    if (savedHistory) setHistory(JSON.parse(savedHistory));
-    if (savedActiveEnv) setActiveEnvId(savedActiveEnv);
-  }, []);
-
-  // Save to localStorage
+  // Enregistrement : copie durable sans secret, secrets dans la session
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify(collections));
-  }, [collections]);
+    try {
+      persistApiTesterState(localStorage, sessionStorage, collections, environments);
+    } catch {
+      /* stockage indisponible ou plein : l'etat reste en memoire */
+    }
+  }, [collections, environments]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.ENVIRONMENTS, JSON.stringify(environments));
-  }, [environments]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history.slice(0, 50)));
+    try {
+      persistApiTesterHistory(localStorage, history);
+    } catch {
+      /* stockage indisponible ou plein */
+    }
   }, [history]);
 
   useEffect(() => {
@@ -233,7 +257,7 @@ export default function ApiTester() {
       const historyItem: HistoryItem = {
         id: Date.now().toString(),
         method,
-        url: finalUrl,
+        url: redactUrl(finalUrl),
         status: res.status,
         timestamp: Date.now(),
         responseTime: time,
@@ -525,6 +549,7 @@ export default function ApiTester() {
           <p className="text-muted-foreground">
             Testez vos API avec collections, environnements et génération de code
           </p>
+          <p className="text-xs text-muted-foreground mt-1 max-w-3xl">{SESSION_NOTE}</p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
@@ -561,7 +586,8 @@ export default function ApiTester() {
                 {environments.map(env => (
                   <TabsContent key={env.id} value={env.id} className="space-y-4">
                     <p className="text-sm text-muted-foreground">
-                      Utilisez <code className="bg-muted px-1 rounded">{"{{VARIABLE}}"}</code> dans l'URL, headers ou body
+                      Utilisez <code className="bg-muted px-1 rounded">{"{{VARIABLE}}"}</code> dans l'URL, headers ou body.
+                      Les valeurs des variables au nom sensible (API_KEY, TOKEN, PASSWORD...) ne durent que le temps de l'onglet.
                     </p>
                     {Object.entries(env.variables).map(([key, value]) => (
                       <div key={key} className="flex gap-2">
@@ -611,7 +637,13 @@ export default function ApiTester() {
           </Dialog>
 
           {/* Import/Export */}
-          <Button variant="outline" size="icon" onClick={exportCollections}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={exportCollections}
+            title="Exporter collections et environnements (fichier en clair, valeurs sensibles comprises)"
+            aria-label="Exporter collections et environnements"
+          >
             <Download className="h-4 w-4" />
           </Button>
           <label>

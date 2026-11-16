@@ -28,7 +28,8 @@ export function ClipboardModal() {
             Historique du presse-papier
           </DialogTitle>
           <DialogDescription>
-            Gardez une trace de ce que vous avez copié récemment (Ctrl+Shift+V)
+            Vos dernières copies dans la boîte à outils (Ctrl+Shift+V). Elles ne sont gardées que le temps
+            de cet onglet et disparaissent à sa fermeture.
           </DialogDescription>
         </DialogHeader>
 
