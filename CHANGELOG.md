@@ -5,6 +5,10 @@ Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
 ---
 
+## [Non publié]
+
+- Source regroupée dans `D:\0CODE\0FINAL\it\hdtb` (17/11/2026, réorganisation des plateformes). Aucun chemin de l'ancien emplacement dans le dépôt ; build inchangé, identique à celui publié.
+
 ## [3.0.6] - 2026-11-16
 
 ### Confidentialite : presse-papiers, testeur d'API, reinitialisation
